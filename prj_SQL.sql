@@ -38,6 +38,7 @@ CREATE TABLE moneda (
 -- Estructura de la tabla "empleado"
 CREATE TABLE empleado (
         id INT AUTO_INCREMENT PRIMARY KEY,
+        status INT NOT NULL DEFAULT 1,
         nombre VARCHAR(100) NOT NULL,
         apellido VARCHAR(100) NOT NULL,
         puesto VARCHAR(100) NOT NULL,
@@ -70,7 +71,8 @@ CREATE TABLE clientes (
 -- Estructura de la tabla "categoria_producto"
 CREATE TABLE categoria_producto (
         id INT AUTO_INCREMENT PRIMARY KEY,
-        nombre VARCHAR(100) NOT NULL
+        nombre VARCHAR(100) NOT NULL,
+        descripcion VARCHAR(200) NOT NULL
 );
 -- Estructura de la tabla "producto"
 CREATE TABLE producto (
