@@ -4,7 +4,7 @@ go
 -- creacion base datos
 drop database bd_DeliFood
 create database bd_DeliFood -- creacion de tablas
- use bd_DeliFood -- Estructura de la tabla "pais"
+use bd_DeliFood -- Estructura de la tabla "pais"
 
 CREATE TABLE pais (
                 idPais INT Identity (1,1) PRIMARY KEY,
@@ -133,17 +133,17 @@ INSERT INTO moneda (nombre, simbolo, pais_id) VALUES ('Colón', '₡', 4), ('Dó
 -- Insertar sucursales
 INSERT INTO sucursal(nombre,direccion,compania_id,pais_id) VALUES('Sucursal 1','Munich',1,8), ('Sucursal 2','Munich',1,8),('Sucursal 1','Washington',2,1),('Sucursal 2','Washington',2,1),('Sucursal 1','Washington',4,3),('Sucursal 2','Washington',4,3);
 
--- Insertar Clientes
+-------- Insertar Clientes -------
 INSERT INTO cliente(nombre,primApellido,segApellido,direccion,telefono,email,cliente_frecuente,lista_negra,pais)
 values('Juan','Perez','Solis','Curridabat, Condominio la Estancia','12345678','j@gmail.com','TRUE','FALSE',4),
-      ('Roberto','Perez','Marquez','Cartago, Condominio la Estancia','00000000','rob@gmail.com','FALSE','FALSE',1),
-      ('Adolf','Hitler','Salchicha','Munich','87654321','fuhrer@gmail.com','FALSE','TRUE',8);
+('Roberto','Perez','Marquez','Cartago, Condominio la Estancia','00000000','rob@gmail.com','FALSE','FALSE',1),
+('Adolf','Hitler','Salchicha','Munich','87654321','fuhrer@gmail.com','FALSE','TRUE',8);
 
 -- Insertar colaboradores
 INSERT INTO colaborador (status, nombre, primApellido,segApellido,puesto,salario,id_pais,sucursal_id)
 values (1 , 'Juan', 'Perez', 'Solano', 'Gerente de ventas', 500000 , 4 , 1),
-       (1 , 'Matilda', 'Suarez', 'Madrigal', 'Adminstradora de incidentes', 400000 , 2 , 2),
-       (0 , 'Luisa', 'Humbrigde', 'Black', 'Recursos Humanos', 1000000 , 8 , 3);
+(1 , 'Matilda', 'Suarez', 'Madrigal', 'Adminstradora de incidentes', 400000 , 2 , 2),
+(0 , 'Luisa', 'Humbrigde', 'Black', 'Recursos Humanos', 1000000 , 8 , 3);
 
 -- Insertar productos
 INSERT INTO producto (nombre,descripcion,precio,moneda_id,categoria_id,id_proveedor) VALUES ('CocaCola','Bebida azucara','1000',4,1,1);
@@ -152,4 +152,7 @@ INSERT INTO producto (nombre,descripcion,precio,moneda_id,categoria_id,id_provee
 INSERT INTO producto (nombre,descripcion,precio,moneda_id,categoria_id,id_proveedor) VALUES ('Sprite','Bebida azucara','1000',4,1,1);
 
 -- Insertar ventas
-INSERTE INTO venta (fechaEmision, fechaRechazo,statusVenta,idColaborador,id_cliente) VALUES ();
+INSERTE INTO venta (fechaEmision, fechaRechazo,statusVenta,idColaborador,id_cliente) VALUES ('2023-01-01', '2023-01-01', 1, 1, 1);
+
+
+
