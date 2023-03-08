@@ -203,6 +203,9 @@ SELECT * FROM sucursal;
 ------SELECT PARA CATEGORIAS PRODUCTO---------
 SELECT * FROM categoria_producto;
 
+------SELECT PARA CLIENTES-------------
+SELECT * FROM clientes;
+
 ----------------------------COMANDOS PARA UPDATES--------------------------------
 
 -----UPDATES PRODUCTOS-------
@@ -241,9 +244,18 @@ DROP VIEW [ConsultaProductoSinNumeros];
 --------------------------------COMANDOS PROCESOS ALMACENADOS--------------------------------------
 
 /*------PROCEDURE 1-------
-CREATE PROCEDURE insertCliente AS
+CREATE PROCEDURE insertCliente AS 
+INSERT INTO (nombre,primApellido,segApellido,direccion,telefono,email,cliente_frecuente,lista_negra,idPais)
+values('Alejandro','Chavarria','Herandez','Cartago', 'Condominio la Pelona','12345678','aleCH@gmail.com','TRUE','FALSE',1);
+go*/
+
+EXEC insertCliente;
+
+CREATE PROCEDURE selectpersona AS
 BEGIN
-        INSERT INTO (nombre,primApellido,segApellido,direccion,telefono,email,cliente_frecuente,lista_negra,idPais)
-        values('Alejandro','Chavarria','Herandez','Cartago', 'Condominio la Pelona','12345678','aleCH@gmail.com','TRUE','FALSE',1);
+        SELECT * FROM clientes;
 END;
-*/
+go
+
+EXEC selectpersona;
+
