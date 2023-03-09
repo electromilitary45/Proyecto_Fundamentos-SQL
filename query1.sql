@@ -1,12 +1,11 @@
-CREATE TABLE sucursal (
-        idSucursal INT Identity (1,1) PRIMARY KEY,
-        nombre VARCHAR(100) NOT NULL,
-        direccion VARCHAR(200) NOT NULL,
-        compania_id INT NOT NULL,
-        pais_id INT NOT NULL,
-        FOREIGN KEY (compania_id) REFERENCES compania(idCompania),
-        FOREIGN KEY (pais_id) REFERENCES pais(idPais)
-);
+SELECT clientes.nombre,clientes.primApellido,clientes.email,pais.nombre,clientes.cliente_frecuente
+FROM clientes
+INNER JOIN pais on pais.idPais = clientes.idPais
+WHERE clientes.cliente_frecuente = 'TRUE';
 
-INSERT INTO sucursal(nombre,direccion,compania_id,pais_id)
-VALUES('Sucursal 1','Washington',1,1)
+
+SELECT venta.fechaEmision,venta.statusVenta,clientes.nombre,producto.nombre,colaborador.nombre
+FROM venta
+INNER JOIN clientes on clientes.idCliente = venta.idCliente
+INNER JOIN colaborador on colaborador.idColaborador = venta.idColaborador
+

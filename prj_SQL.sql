@@ -163,6 +163,8 @@ INSERT INTO producto (nombre,descripcion,precio,idMoneda,idCategoria,idProveedor
 -- Insertar ventas
 INSERT into venta (fechaEmision,idColaborador,idCliente,idProducto,idMoneda,statusVenta)  VALUES ('2023-01-01', 1, 1, 1,1,1);
 
+INSERT into venta (fechaEmision,idColaborador,idCliente,idProducto,idMoneda,statusVenta)  VALUES ('2023-02-23', 1, 1, 1,1,1);
+
 --Inserts de incidentes
 INSERT INTO incidente (fecha,descripcion, idCliente) VALUES ('2023-01-01', 'El cliente no recibio su producto', 1);
 
@@ -197,6 +199,12 @@ SELECT * FROM producto where precio BETWEEN 600 and 999;
 ------SELECT PARA VENTAS--
 SELECT * FROM venta;
 
+SELECT venta.fechaEmision,venta.statusVenta,clientes.nombre,producto.nombre,colaborador.nombre
+FROM venta
+INNER JOIN producto on producto.idProducto = venta.idProducto
+INNER JOIN clientes on clientes.idCliente = venta.idCliente
+INNER JOIN colaborador on colaborador.idColaborador = venta.idColaborador;
+
 ------SELECT PARA SUCURSALES---
 SELECT * FROM sucursal;
 
@@ -205,7 +213,20 @@ SELECT * FROM categoria_producto;
 
 ------SELECT PARA CLIENTES-------------
 SELECT * FROM clientes;
+         --- VER CLIENTES CON DATOS ESPECIFICOS ---
+SELECT clientes.nombre,clientes.primApellido,clientes.telefono,clientes.email,pais.nombre 
+FROM clientes 
+INNER JOIN pais on pais.idPais = clientes.idPais;
+          --- VER CLIENTES FRECUENTES ---
+SELECT clientes.nombre,clientes.primApellido,clientes.email,pais.nombre,clientes.cliente_frecuente
+FROM clientes
+INNER JOIN pais on pais.idPais = clientes.idPais
+WHERE clientes.cliente_frecuente = 'TRUE';
 
+------SELECT PARA COLABORADORES---------
+SELECT colaborador.nombre,colaborador.primApellido,sucursal.nombre,colaborador.puesto,colaborador.salario 
+FROM colaborador 
+INNER JOIN sucursal on sucursal.idSucursal = colaborador.idSucursal;
 ----------------------------COMANDOS PARA UPDATES--------------------------------
 
 -----UPDATES PRODUCTOS-------
@@ -214,10 +235,49 @@ UPDATE producto set precio=910 where idProducto=2;
 UPDATE producto set precio=600 where idProducto=3;
 
 
+-----UPDATE VENTAS---------
+update venta
+set fechaRechazo = '2023-02-25',statusVenta = 5
+where idVenta = 2;
+
 -------------------------------COMANDOS PARA DELETE-----------------------------------------
 
 -----DELETE PRODUCTOS--------
 DELETE producto where idProducto = 7;
+
+-------------------------------COMANDOS PARA TRUNCATE----------------------------------
+----TRUNCATE PAIS----
+--TRUNCATE TABLE pais;
+
+-- ----TRUNCATE COMPANIA----
+---TRUNCATE TABLE compania;
+
+-- ----TRUNCATE SUCURSAL----
+-- --TRUNCATE TABLE sucursal;
+
+-- ----TRUNCATE MONEDA----
+-- --TRUNCATE TABLE moneda;
+
+-- ----TRUNCATE COLABORADOR----
+-- TRUNCATE TABLE colaborador;
+
+-- ----TRUNCATE  CLIENTES----
+-- TRUNCATE TABLE clientes;
+
+-- ----TRUNCATE CATEGORIA PRODUCTO----
+-- TRUNCATE TABLE categoria_producto;
+
+-- ----TRUNCATE PROVEEDORES----
+-- TRUNCATE TABLE proveedor;
+
+-- ----TRUNCATE PRODUCTO----
+-- TRUNCATE TABLE producto;
+
+-- ----TRUNCATE VENTA----
+-- TRUNCATE TABLE venta;
+
+-- ----TRUNCATE INCIDENTE----
+-- TRUNCATE TABLE incidente;
 
 ---------------------------------COMANDOS PARA VIEWS------------------------------------
 
