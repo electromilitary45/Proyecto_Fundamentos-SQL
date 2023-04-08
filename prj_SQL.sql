@@ -1,18 +1,28 @@
--- comandos princiapales
+--------------------------------COMANDOS PRINCIPALES--------------------------------------
 use master
 go 
--- creacion base datos
+
+
+
+
+
+--------------------------------CREACION DE BASE DE DATOS--------------------------------------
 drop database bd_DeliFood;
 create database bd_DeliFood; -- creacion de tablas
-use bd_DeliFood; -- Estructura de la tabla "pais"\
+use bd_DeliFood; 
 
--- drop de tablas--
-DROP TABLE clientes;
-------------------------------CREACION DE TABLAS-----------------------------------
+
+
+
+
+--------------------------------CREACION DE TABLAS--------------------------------------
+-- Estructura de la tabla "pais"
 CREATE TABLE pais (
-                idPais INT Identity (1,1) PRIMARY KEY,
-                nombre VARCHAR(20) NOT NULL
-        );
+        idPais INT Identity (1,1) PRIMARY KEY,
+        nombre VARCHAR(20) NOT NULL
+);
+
+
 -- Estructura de la tabla "compania"
 CREATE TABLE compania (
         idCompania INT Identity (1,1) PRIMARY KEY,
@@ -20,6 +30,8 @@ CREATE TABLE compania (
         idPais INT NOT NULL,
         FOREIGN KEY (idPais) REFERENCES pais(idPais)
 );
+
+
 -- Estructura de la tabla "sucursal"
 CREATE TABLE sucursal (
         idSucursal INT Identity (1,1) PRIMARY KEY,
@@ -30,6 +42,8 @@ CREATE TABLE sucursal (
         FOREIGN KEY (idCompania) REFERENCES compania(idCompania),
         FOREIGN KEY (idPais) REFERENCES pais(idPais)
 );
+
+
 -- Estructura de la tabla "moneda"
 CREATE TABLE moneda (
         idMoneda INT Identity (1,1) PRIMARY KEY,
@@ -38,7 +52,9 @@ CREATE TABLE moneda (
         idPais INT NOT NULL,
         FOREIGN KEY (idPais) REFERENCES pais(idPais)
 );
--- Estructura de la tabla "empleado"
+
+
+-- Estructura de la tabla "colaborador"
 CREATE TABLE colaborador (
         idColaborador INT Identity (1,1) PRIMARY KEY,
         status BIT NOT NULL DEFAULT 1,
@@ -52,7 +68,9 @@ CREATE TABLE colaborador (
         FOREIGN KEY (idPais) REFERENCES pais(idPais),
         FOREIGN KEY (idSucursal) REFERENCES sucursal(idSucursal)
 );
--- Estructura de la tabla "cliente"--
+
+
+-- Estructura de la tabla "cliente"
 CREATE TABLE clientes (
         idCliente INT Identity (1,1) PRIMARY KEY,
         nombre VARCHAR(20) NOT NULL,
@@ -66,6 +84,7 @@ CREATE TABLE clientes (
         idPais INT NOT NULL,
         FOREIGN KEY (idPais) REFERENCES pais(idPais)
 );
+
 -- Estructura de la tabla "categoria_producto"
 CREATE TABLE categoria_producto (
         idCategoria INT Identity (1,1) PRIMARY KEY,
@@ -73,11 +92,15 @@ CREATE TABLE categoria_producto (
         descripcion VARCHAR(200) NOT NULL
 );
 
+
+-- Estructura de la tabla "proveedor"
 CREATE TABLE proveedor(
         idProveedor INT Identity (1,1) PRIMARY KEY,
         nombreEmpresa VARCHAR(50) NOT NULL,
         cedulaJuridica VARCHAR(12) NOT NULL
 );
+
+
 -- Estructura de la tabla "producto"
 CREATE TABLE producto (
         idProducto INT Identity (1,1) PRIMARY KEY,
@@ -90,9 +113,10 @@ CREATE TABLE producto (
         FOREIGN KEY (idProveedor) REFERENCES proveedor(idProveedor),
         FOREIGN KEY (idMoneda) REFERENCES moneda(idMoneda),
         FOREIGN KEY (idCategoria) REFERENCES categoria_producto(idCategoria)
-        
 );
--------VENTAS----------------
+
+
+-- Estructura de la tabla "venta"
 CREATE TABLE venta(
         idVenta INT Identity (1,1) PRIMARY KEY,
         fechaEmision DATE NOT NULL,
@@ -106,12 +130,11 @@ CREATE TABLE venta(
         FOREIGN KEY (idProducto) REFERENCES producto(idProducto),
         FOREIGN KEY (idCliente) REFERENCES clientes(idCliente),
         FOREIGN KEY (idColaborador) REFERENCES colaborador(idColaborador),
-        constraint stVenta CHECK (
-                statusVenta between 1 and 5
-        )
+        constraint stVenta CHECK ( statusVenta between 1 and 5 )
 );
 
--------INCIDENTES----------------
+
+-- Estructura de la tabla "incidente"
 CREATE TABLE incidente(
         idIncidente INT Identity (1,1) PRIMARY KEY,
         fecha DATE NOT NULL,
@@ -120,33 +143,41 @@ CREATE TABLE incidente(
         FOREIGN KEY (idCliente) REFERENCES clientes(idCliente),
 );
 
-alter table incidente add estado varchar(50) null  default 'Pendiente';
 
--------------------------------COMANDOS METER DATOS--------------------------------------
 
+
+
+--------------------------------INSERTS--------------------------------------
 -- Insertar paises
 INSERT INTO pais (nombre) VALUES ('Estados Unidos'), ('Panama'), ('Nicaragua'), ('Costa Rica'), ('Canada'), ('Japon'), ('China'), ('Alemania');
+
 
 -- Insertar companias
 INSERT INTO compania ( nombre ,idPais) VALUES ('Madrigal Electromotors' , 8), ('Ebay', 1), ('Super 99', 2), ('NicaSuper', 3), ('Dos Pinos' , 4) , ('PolarBear', 5), ('Mitshubishi', 6), ('GuanzhouMart', 7);
 
+
 --insertar un proveedor
 INSERT INTO proveedor ( nombreEmpresa,cedulaJuridica) VALUES ('DeliFood', '3-101-123456');
+
 
 --insertar una categoria
 INSERT INTO categoria_producto (nombre,descripcion) VALUES ('Alcholicas','Bebidas Alcoholicas'),('No alcholicas','Bebidas No alcohólicas'),('Gaseosas','Bebidas Gaseosas');
 
+
 -- Insertar monedas
 INSERT INTO moneda ( nombre,simbolo, idPais) VALUES ('Colón', '₡', 4), ('Dólar', '$', 1), ('Yen', '¥', 7);
+
 
 -- Insertar sucursales
 INSERT INTO sucursal (nombre,direccion,idCompania,idPais) VALUES('Sucursal 1','Munich',1,8), ('Sucursal 2','Cartago',1,8),('Sucursal 3','San Jose',2,1),('Sucursal 3','Washington',2,1),('Sucursal 4','Barcelona',4,3),('Sucursal 5','Madrid',4,3);
 
--------- Insertar Clientes -------
+
+-- Insertar clientes
 INSERT INTO clientes(nombre,primApellido,segApellido,direccion,telefono,email,cliente_frecuente,lista_negra,idPais)
 values('Juan','Perez','Solis','Curridabat, Condominio la Estancia','12345678','j@gmail.com','TRUE','FALSE',4),
 ('Roberto','Perez','Marquez','Cartago, Condominio la Estancia','00000000','rob@gmail.com','FALSE','FALSE',1),
 ('Adolf','Hitler','Salchicha','Munich','87654321','fuhrer@gmail.com','FALSE','TRUE',8);
+
 
 -- Insertar colaboradores
 INSERT INTO colaborador (nombre, primApellido,segApellido,puesto,salario,idPais,idSucursal)
@@ -154,64 +185,45 @@ values ( 'Juan', 'Perez', 'Solano', 'Gerente de ventas', 500000 , 4 , 1),
 ( 'Matilda', 'Suarez', 'Madrigal', 'Adminstradora de incidentes', 400000 , 2 , 2),
 ( 'Luisa', 'Humbrigde', 'Black', 'Recursos Humanos', 1000000 , 8 , 3);
 
+
 -- Insertar productos
 INSERT INTO producto (nombre,descripcion,precio,idMoneda,idCategoria,idProveedor) VALUES ('CocaCola','Bebida azucara','1000',1,1,1);
 INSERT INTO producto (nombre,descripcion,precio,idMoneda,idCategoria,idProveedor) VALUES ('Pepsi','Bebida azucara','1000',1,1,1);
 INSERT INTO producto (nombre,descripcion,precio,idMoneda,idCategoria,idProveedor) VALUES ('Fanta','Bebida azucara','1000',1,1,1);
 INSERT INTO producto (nombre,descripcion,precio,idMoneda,idCategoria,idProveedor) VALUES ('Sprite','Bebida azucara','1000',1,1,1);
 
+
 -- Insertar ventas
 INSERT into venta (fechaEmision,idColaborador,idCliente,idProducto,idMoneda,statusVenta)  VALUES ('2023-01-01', 1, 1, 1,1,1);
 
-INSERT into venta (fechaEmision,idColaborador,idCliente,idProducto,idMoneda,statusVenta)  VALUES ('2023-02-23', 1, 1, 1,1,1);
 
 --Inserts de incidentes
 INSERT INTO incidente (fecha,descripcion, idCliente) VALUES ('2023-01-01', 'El cliente no recibio su producto', 1);
 
 
-----------------------------COMANDOS PARA LEER--------------------------------
 
-------SELECTS PARA PAIS----
+
+
+--------------------------------SELECTS--------------------------------------
+---------SELECTS PARA PAIS---------
 SELECT * FROM pais;
-SELECT* FROM pais WHERE nombre like ' %a% ';
-SELECT* FROM pais WHERE nombre like ' %b% ' or nombre like ' %e ';
-SELECT * FROM pais WHERE nombre not LIKE ' c% ' and nombre not like 'C%';
 
--------SELECTS PARA COMPANIAS---
 
+---------SELECTS PARA COMPANIAS---------
 SELECT * FROM compania;
 
 SELECT COUNT(idCompania) AS "Total de CompaÑIAS" from compania;
 
-------SELECTS PARA PRODUCTOS---
-SELECT * FROM producto;
+---------SELECTS PARA MONEDAS---------
+SELECT * FROM moneda;
 
-SELECT producto.idProducto, categoria_producto.nombre, producto.descripcion, proveedor.nombreEmpresa, moneda.simbolo, producto.nombre, producto.precio 
-from producto 
-INNER JOIN proveedor on proveedor.idProveedor=producto.idProveedor 
-INNER JOIN moneda on moneda.idMoneda = producto.idMoneda
-INNER JOIN categoria_producto on categoria_producto.idCategoria=producto.idCategoria
 
-SELECT * FROM producto ORDER BY precio desc;
+---------SELECTS PARA COLABORADORES---------
+SELECT * FROM colaborador;
 
-SELECT * FROM producto where precio BETWEEN 600 and 999;
 
-------SELECT PARA VENTAS--
-SELECT * FROM venta;
+---------SELECT PARA CLIENTES---------
 
-SELECT venta.fechaEmision,venta.statusVenta,clientes.nombre,producto.nombre,colaborador.nombre
-FROM venta
-INNER JOIN producto on producto.idProducto = venta.idProducto
-INNER JOIN clientes on clientes.idCliente = venta.idCliente
-INNER JOIN colaborador on colaborador.idColaborador = venta.idColaborador;
-
-------SELECT PARA SUCURSALES---
-SELECT * FROM sucursal;
-
-------SELECT PARA CATEGORIAS PRODUCTO---------
-SELECT * FROM categoria_producto;
-
-------SELECT PARA CLIENTES-------------
 SELECT * FROM clientes;
          --- VER CLIENTES CON DATOS ESPECIFICOS ---
 SELECT clientes.nombre,clientes.primApellido,clientes.telefono,clientes.email,pais.nombre 
@@ -227,11 +239,43 @@ WHERE clientes.cliente_frecuente = 'TRUE';
 SELECT colaborador.nombre,colaborador.primApellido,sucursal.nombre,colaborador.puesto,colaborador.salario 
 FROM colaborador 
 INNER JOIN sucursal on sucursal.idSucursal = colaborador.idSucursal;
-----------------------------COMANDOS PARA UPDATES--------------------------------
+
+
+---------SELECT PARA PROVEEDORES---------
+SELECT * FROM proveedor;
+
+---------SELECTS PARA PRODUCTOS---------
+SELECT * FROM producto;
+
+SELECT * FROM producto ORDER BY precio desc;
+
+SELECT * FROM producto where precio BETWEEN 600 and 999;
+
+
+---------SELECT PARA VENTAS---------
+SELECT * FROM venta;
+
+
+---------SELECT PARA INCIDENTES---------
+SELECT * FROM incidente;
+
+
+---------SELECT PARA SUCURSALES---------
+SELECT * FROM sucursal;
+
+
+---------SELECT PARA CATEGORIAS PRODUCTO---------
+SELECT * FROM categoria_producto;
+
+
+
+
+
+----------------------------UPDATES--------------------------------
 
 -----UPDATES PRODUCTOS-------
 UPDATE producto set precio=1550 where idProducto=1;
-UPDATE producto set precio=910 where idProducto=2;
+UPDATE colaborador set [status]=0 where idColaborador=2;
 UPDATE producto set precio=600 where idProducto=3;
 
 
@@ -240,46 +284,108 @@ update venta
 set fechaRechazo = '2023-02-25',statusVenta = 5
 where idVenta = 2;
 
--------------------------------COMANDOS PARA DELETE-----------------------------------------
+
+
+-------------------------------DELETE-----------------------------------------
 
 -----DELETE PRODUCTOS--------
 DELETE producto where idProducto = 7;
+DELETE clientes where lista_negra = 0 AND cliente_frecuente = 0;
 
--------------------------------COMANDOS PARA TRUNCATE----------------------------------
-----TRUNCATE PAIS----
---TRUNCATE TABLE pais;
 
--- ----TRUNCATE COMPANIA----
----TRUNCATE TABLE compania;
 
--- ----TRUNCATE SUCURSAL----
--- --TRUNCATE TABLE sucursal;
 
--- ----TRUNCATE MONEDA----
--- --TRUNCATE TABLE moneda;
 
--- ----TRUNCATE COLABORADOR----
--- TRUNCATE TABLE colaborador;
+-------------------------------TRUNCATE-----------------------------------------
 
--- ----TRUNCATE  CLIENTES----
--- TRUNCATE TABLE clientes;
+-----TRUNCATE PAIS--------
+TRUNCATE TABLE pais;
 
--- ----TRUNCATE CATEGORIA PRODUCTO----
--- TRUNCATE TABLE categoria_producto;
+-----TRUNCATE COMPANIA--------
+TRUNCATE TABLE compania;
 
--- ----TRUNCATE PROVEEDORES----
--- TRUNCATE TABLE proveedor;
+-----TRUNCATE SUCURSAL--------
+TRUNCATE TABLE sucursal;
 
--- ----TRUNCATE PRODUCTO----
--- TRUNCATE TABLE producto;
+-----TRUNCATE MONEDA--------
+TRUNCATE TABLE moneda;
 
--- ----TRUNCATE VENTA----
--- TRUNCATE TABLE venta;
+-----TRUNCATE COLABORADOR--------
+TRUNCATE TABLE colaborador;
 
--- ----TRUNCATE INCIDENTE----
--- TRUNCATE TABLE incidente;
+-----TRUNCATE CLIENTES--------
+TRUNCATE TABLE clientes;
 
----------------------------------COMANDOS PARA VIEWS------------------------------------
+-----TRUNCATE CATEGORIA PRODUCTO--------
+TRUNCATE TABLE categoria_producto;
+
+-----TRUNCATE PROVEEDOR--------
+TRUNCATE TABLE proveedor;
+
+-----TRUNCATE PRODUCTO--------
+TRUNCATE TABLE producto;
+
+-----TRUNCATE VENTA--------
+TRUNCATE TABLE venta;
+
+-----TRUNCATE INCIDENTE--------
+TRUNCATE TABLE incidente;
+
+
+
+
+
+--------------------------------REPORTES GENERALES--------------------------------------
+---------Reporte General de Colaboradores---------
+SELECT * FROM colaborador;
+
+
+---------Reporte General de Clientes---------
+SELECT * FROM clientes;
+
+
+---------Reporte General de Clientes Frecuentes---------
+SELECT * FROM clientes
+WHERE cliente_frecuente = 1;
+
+
+---------Reporte General de Ventas Emitidas---------
+CREATE VIEW ConsultaVentasEmitidas AS
+SELECT venta.idVenta AS VENTA, venta.fechaEmision AS EMISION, venta.statusVenta AS ESTATUS, venta.idColaborador AS COLABORADOR, venta.idCliente AS CLIENTE, venta.idProducto AS PRODUCTO, venta.idMoneda AS MOENDA
+FROM venta 
+WHERE fechaRechazo is NULL
+
+SELECT * FROM ConsultaVentasEmitidas
+
+
+---------Reporte General de Ventas Anuladas---------
+CREATE VIEW VENTASANULADAS as
+SELECT venta.idVenta as #Venta, venta.fechaEmision as FechaDeEmision, venta.fechaRechazo as FechaRechazo, venta.statusVenta as Estado, colaborador.nombre as Colaborador,clientes.nombre as NombreCliente, producto.nombre as Producto, moneda.simbolo as Moneda
+FROM venta, clientes,moneda,producto,colaborador
+WHERE venta.idColaborador= colaborador.idColaborador and venta.idCliente = clientes.idCliente and venta.idMoneda = moneda.idMoneda and producto.idProducto = venta.idProducto and venta.statusVenta=5;
+
+SELECT * FROM  VENTASANULADAS;
+
+
+---------Reporte General de Ventas por Rango de Fecha---------
+SELECT venta.idVenta, venta.fechaEmision, clientes.nombre
+FROM venta 
+INNER JOIN clientes ON venta.idCliente = clientes.idCliente
+WHERE venta.fechaEmision BETWEEN '2022-01-01' AND '2023-01-31'
+
+
+---------Histórico de Ventas---------
+SELECT * FROM venta;
+
+
+---------Histórico de Incidentes---------
+SELECT * FROM incidente;
+
+
+
+
+
+--------------------------------CREACION DE VIEWS - REPORTES ADICIONALES--------------------------------------
 
 ----------VIEW 1------------
 CREATE VIEW ConsultaCompaniaPais AS
@@ -289,7 +395,7 @@ WHERE compania.idPais=pais.idPais;
 
 SELECT * FROM ConsultaCompaniaPais;
 
---------VIEW 2---------------
+----------VIEW 2------------
 CREATE VIEW ConsultaProductoSinNumeros AS 
 SELECT producto.idProducto AS IdProducto, producto.nombre AS NOMBRE, categoria_producto.nombre AS CATEGORIA, producto.descripcion as DESCRIPCION, proveedor.nombreEmpresa as PROVEEDOR, moneda.simbolo as MONEDA, producto.precio as PRECIO
 from producto, proveedor,moneda, categoria_producto
@@ -299,18 +405,48 @@ SELECT * FROM ConsultaProductoSinNumeros;
 
 DROP VIEW [ConsultaProductoSinNumeros];
 
--------VIEW 3------------
+----------VIEW 3------------
+CREATE VIEW ColaboradorSucursal as
+SELECT colaborador.nombre as Nombre, colaborador.primApellido as Apellido, sucursal.nombre as Sucursal
+from colaborador, sucursal
+where colaborador.idSucursal = sucursal.idSucursal;
 
---------------------------------COMANDOS PROCESOS ALMACENADOS--------------------------------------
+SELECT * FROM ColaboradorSucursal;
 
-/*------PROCEDURE 1-------
+
+----------VIEW 4------------
+CREATE VIEW ProveedorProducto as
+SELECT proveedor.idProveedor as IDProveedor, proveedor.nombreEmpresa as NombreEmpresa, producto.idProducto as IDProducto, producto.nombre as NombreProducto
+from proveedor, producto
+where proveedor.idProveedor = producto.idProveedor;
+
+SELECT * from ProveedorProducto;
+
+----------VIEW 5------------
+CREATE VIEW ConsultaVentaProducto AS 
+SELECT venta.idVenta AS #VENTA, venta.fechaEmision AS EMISION, venta.statusVenta AS ESTATUS, producto.idProducto AS #PRODUCTO, producto.nombre AS PRODUCTO, producto.descripcion AS DESCRIPCION, producto.precio AS PRECIO
+FROM venta, producto
+WHERE venta.idProducto = producto.idProducto;
+
+SELECT * FROM ConsultaVentaProducto;
+
+DROP VIEW ConsultaVentaProducto;
+
+
+
+
+
+--------------------------------PROCEDURES--------------------------------------
+------PROCEDURE 1-------
 CREATE PROCEDURE insertCliente AS 
-INSERT INTO (nombre,primApellido,segApellido,direccion,telefono,email,cliente_frecuente,lista_negra,idPais)
-values('Alejandro','Chavarria','Herandez','Cartago', 'Condominio la Pelona','12345678','aleCH@gmail.com','TRUE','FALSE',1);
-go*/
+INSERT INTO clientes (nombre,primApellido,segApellido,direccion,telefono,email,cliente_frecuente,lista_negra,idPais)
+values('Alejandro','Chavarria','Herandez','Cartago ,Condominio la Pelona','12345678','aleCH@gmail.com','TRUE','FALSE',1);
+go
 
 EXEC insertCliente;
 
+
+-----PROCEDURE 2-------
 CREATE PROCEDURE selectpersona AS
 BEGIN
         SELECT * FROM clientes;
@@ -318,4 +454,64 @@ END;
 go
 
 EXEC selectpersona;
+
+
+
+
+
+--------------------------------TRIGGERS--------------------------------------
+-----TRIGGER 1-------
+create trigger Consulta1
+on proveedor
+after insert
+as
+begin
+ select * from proveedor;
+end;
+go
+
+-----TRIGGER 2-------
+create trigger Consulta2
+on clientes
+after insertCliente
+as
+begin
+ select * from clientes;
+end;
+go
+
+-----TRIGGER 3-------
+create trigger Consulta3
+on producto
+after insert
+as
+begin
+ select * from producto;
+end;
+go
+
+-----TRIGGER 4-------
+create trigger Consulta4
+on colaborador
+after insert
+as
+begin
+ select * from colaborador;
+end;
+go
+
+-----TRIGGER 5-------
+create trigger Consulta5
+on producto
+after insert
+as
+begin
+        SELECT producto.idProducto, categoria_producto.nombre, producto.descripcion, proveedor.nombreEmpresa, moneda.simbolo, producto.nombre, producto.precio 
+        from producto 
+        INNER JOIN proveedor on proveedor.idProveedor=producto.idProveedor 
+        INNER JOIN moneda on moneda.idMoneda = producto.idMoneda
+        INNER JOIN categoria_producto on categoria_producto.idCategoria=producto.idCategoria
+end;
+go
+
 
