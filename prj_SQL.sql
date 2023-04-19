@@ -64,10 +64,20 @@ CREATE TABLE colaborador (
         puesto VARCHAR(50) NOT NULL,
         salario BIGINT NOT NULL,
         idPais INT NOT NULL,
-        idSucursal INT NOT NULL,
-        FOREIGN KEY (idPais) REFERENCES pais(idPais),
-        FOREIGN KEY (idSucursal) REFERENCES sucursal(idSucursal)
+        FOREIGN KEY (idPais) REFERENCES pais(idPais)
 );
+
+
+-- Estructura de la tabla Sucursal-Colaborador --
+CREATE TABLE sucursal_colaborador(
+	idSucursalColaborador int identity (1,1) primary key,
+	idColaborador int not null,
+	idSucursal int not null,
+	FOREIGN KEY (idColaborador) REFERENCES colaborador(idColaborador),
+	FOREIGN KEY (idSucursal) REFERENCES sucursal(idSucursal)
+);
+
+
 
 
 -- Estructura de la tabla "cliente"
@@ -140,6 +150,8 @@ CREATE TABLE incidente(
         fecha DATE NOT NULL,
         descripcion VARCHAR(255) NOT NULL,
         idCliente INT NOT NULL,
+		idColaborador INT NULL,
+		FOREIGN KEY (idColaborador) REFERENCES colaborador (idColaborador),
         FOREIGN KEY (idCliente) REFERENCES clientes(idCliente),
 );
 
